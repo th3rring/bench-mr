@@ -312,7 +312,10 @@ void PlannerSettings::GlobalSettings::EnvironmentSettings::CollisionSettings::
   if (collision_model == robot::ROBOT_POLYGON) {
     robot_shape = SvgPolygonLoader::load(robot_shape_source)[0];
     robot_shape.value().center();
-    robot_shape.value().scale(global::settings.env.polygon.scaling);
+
+    // Why did they do this... Scales the robot and the environment together.
+    // robot_shape.value().scale(global::settings.env.polygon.scaling);
+
     OMPL_INFORM("Loaded polygon robot model from %s with %d vertices.",
                 robot_shape_source.value().c_str(),
                 robot_shape.value().points.size());
@@ -329,7 +332,8 @@ PlannerSettings::GlobalSettings::OmplSettings::OmplSettings(const char *name,
   retrieveControlPlannerParams();
 }
 
-void PlannerSettings::GlobalSettings::OmplSettings::retrieveGeometricPlannerParams() {
+void PlannerSettings::GlobalSettings::OmplSettings::
+    retrieveGeometricPlannerParams() {
   // Create dummy state space to create dummy planners for param retrieval
   auto space_ptr = std::make_shared<ob::SE2StateSpace>();
   auto space_info_ptr = std::make_shared<ob::SpaceInformation>(space_ptr);
@@ -368,7 +372,8 @@ void PlannerSettings::GlobalSettings::OmplSettings::retrieveGeometricPlannerPara
   ompl::msg::setLogLevel(ompl::msg::LOG_INFO);
 }
 
-void PlannerSettings::GlobalSettings::OmplSettings::retrieveControlPlannerParams() {
+void PlannerSettings::GlobalSettings::OmplSettings::
+    retrieveControlPlannerParams() {
   auto space_ptr = std::make_shared<ob::SE2StateSpace>();
   auto control_space_ptr_ =
       std::make_shared<oc::RealVectorControlSpace>(space_ptr, 2);
