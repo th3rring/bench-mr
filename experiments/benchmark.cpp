@@ -184,6 +184,10 @@ int main(int argc, char **argv) {
       global::settings.env.createEnvironment();
       global::settings.env.grid.seed += 1;
 
+      // Spec seed here
+      // global::settings.ompl.seed = i + 1;
+      // ompl::RNG::setSeed(i + 1);
+
       // global::settings.steer.initializeSteering();
 
       nlohmann::json info;
